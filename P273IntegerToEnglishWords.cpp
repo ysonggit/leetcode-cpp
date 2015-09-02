@@ -1,57 +1,46 @@
 class Solution {
 public:
-    // 破题！ 太他妈的无聊了！！
-    string less_than_10[10] ={"Zero","One","Two","Three","Four","Five","Six","Seven","Eight","Nine"};
-    string less_than_20[10] ={"Ten","Eleven","Twelve","Thirteen","Fourteen","Fifteen","Sixteen","Seventeen","Eighteen","Nineteen"};
-    string less_than_100[10] ={"","","Twenty","Thirty","Forty","Fifty","Sixty","Seventy","Eighty","Ninety"};
-    string units [4] ={"","Thousand","Million","Billion"}; // maximum is 2,147,483,647 
-    
-    string chunkToWords(int num, int greater_than_1000){
-        if(num==0) return ""; 
-        bool greater_than_100 = false;
-        string prefix ="";
-        if(num>99){
-            greater_than_100 = true;
-            prefix = less_than_10[num/100] + " Hundred";
-            
+    unordered_map<int, string> table={
+    {0, ""}, {1, "One"},{2, "Two"},{3, "Three"},{4, "Four"},{5, "Five"},{6, "Six"},{7, "Seven"}, {8, "Eight"}, {9, "Nine"}, {10, "Ten"}, {11, "Eleven"}, {12, "Twelve"}, {13, "Thirteen"}, {14, "Fourteen"}, {15, "Fifteen"}, {16, "Sixteen"}, {17, "Seventeen"}, {18, "Eighteen"}, {19, "Nineteen"}, {20, "Twenty"}, {30, "Thirty"}, {40, "Forty"}, {50, "Fifty"}, {60, "Sixty"},{70,"Seventy"},{80, "Eighty"},{90, "Ninety"}
+    };
+    string threeDigits(int n){
+        string res="";
+        if(n>=100) {
+            res += table[n/100] + " Hundred";
+            n = n % 100;
         }
-        num = num%100;
-        if(num==0 && greater_than_100) return prefix;
-        string two_digits = "";
-        if(num>0 && num<=9){
-            two_digits = less_than_10[num];
-        }else if(num>=10 && num<20){
-            two_digits = less_than_20[num%10]; // mistake: [num]
-        }else{// >=20
-            string tens = less_than_100[num/10];
-            int digit = num%10;
-            string ones = (digit==0) ? "" : (" " + less_than_10[digit]);
-            two_digits = tens + ones;
+        if(res.length()>0 && n>0) res += " ";
+        if(n<=20) res += table[n];
+        else{
+            int ones = n%10;
+            int tens = n - ones;
+            res += table[tens];
+            if(ones > 0) res += " " + table[ones];
         }
-        return (greater_than_100) ? prefix + " " + two_digits : two_digits;
+        return res;
     }
-    
     string numberToWords(int num) {
-        if(num==0) return "Zero"; // corner case "0"
-        // chunck into 3digits: each chunck has 3 digits
-        stringstream ss;
-        ss << num;
-        string number_str = ss.str();
-        int n = number_str.length();
-        int num_chunks = (int) ceil(1.0*n/3);
-        string words;
-        for(int i = 1; i<=num_chunks; i++){
-            int start_idx = n - i * 3;
-            if(start_idx < 0) start_idx = 0;
-            string chunck = number_str.substr(start_idx); 
-            if(num==12345) cout<<chunck<<endl;
-            int new_size = number_str.length() - chunck.size();
-            if(new_size<0) new_size= 0;
-            number_str = number_str.substr(0, new_size);
-            string suffix = chunkToWords(stoi(chunck), i);
-            if(i>1 && suffix.length()>0) suffix = suffix +" " + units[i-1] + " ";
-            words = words.insert(0, suffix);
+        if(num==0) return "Zero";
+        string words = "";
+        if(num / 1000000000 > 0){
+            int b = num / 1000000000;
+            words += threeDigits(b) + " Billion";
+            num = num % 1000000000;
         }
-        return (words[words.length()-1]==' ') ? words.substr(0, words.length()-1) : words;
+        if(num/1000000 > 0){
+            int m = num / 1000000;
+            if(words.length()>0 && m > 0) words += " ";
+            words += threeDigits(m) + " Million";
+            num = num % 1000000;
+        }
+        if(num/1000 > 0){
+            int t = num / 1000;
+            if(words.length()>0 && t>0) words += " ";
+            words += threeDigits(t) + " Thousand";
+            num = num % 1000;
+        }
+        if(words.length() > 0 && num > 0) words += " ";
+        words += threeDigits(num);
+        return words;
     }
 };
