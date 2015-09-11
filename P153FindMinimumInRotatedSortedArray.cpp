@@ -5,14 +5,8 @@ public:
         // tricky: [1 2] [2 1]
         if(low+1==high) return min(nums[low], nums[high]);
         int mid = low + (high-low)/2;
-        int left = mid-1; // guaranteed >= 0
-        int right = mid+1; // guaranteed <n
-        if(nums[mid]< nums[left] && nums[mid] < nums[right]){
-            return nums[mid];
-        }
-        int left_min = binarySearch(nums, low, mid-1);
-        int right_min = binarySearch(nums, mid+1, high);
-        return min(left_min, right_min);
+        if(nums[mid] < nums[high]) return binarySearch(nums, low, mid);
+        return binarySearch(nums, mid+1, high);
     }
     int findMin(vector<int>& nums) {
         int n = nums.size();
