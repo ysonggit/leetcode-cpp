@@ -2,26 +2,18 @@ class Solution {
 public:
     // double pointers 
     int lengthOfLongestSubstring(string s) {
-       int n = s.length();
-       if(n<2) return n;
-       // char_count[i] = j means the i-th char appears j times
-       vector<int> char_count(256, 0);
-       int front = 0, back=0;
-       int max_len = 1;
-       while(back<n){
-           unsigned int cur_pos_idx = (unsigned int) s[back];
-           char_count[cur_pos_idx]++; // mistake : idx not equal to back!! idx('a') = 97
-           while(char_count[cur_pos_idx]>1){
-                // move front
-                while(front<back){
-                    unsigned int pre_pos_idx = (unsigned int) s[front]; 
-                    char_count[pre_pos_idx]--;
-                    front++;
-                    if(char_count[cur_pos_idx]==1) break; // important!
-                }    
+       // char_pos[i] = j means the i-th char appears at pos j
+       vector<int> char_pos(256, -1);
+       int start = 0, n= s.length();
+       int max_len = 0;
+       for(int i = 0; i < n; i++){
+           char cur = s[i];
+           if(char_pos[cur]>= start){
+               // dup found, reset start
+               start = char_pos[cur] + 1;
            }
-           max_len = max(max_len, back-front+1);
-           back++;
+           char_pos[cur] = i;
+           max_len = max(max_len, i-start+1);
        }
        return max_len;
     }
