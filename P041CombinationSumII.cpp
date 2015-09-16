@@ -5,7 +5,7 @@ public:
             res.push_back(sol);
             return;
         }
-        if(cur_idx>=candidates.size() || target < 0) return;
+        if(target < 0) return;
         for(int i=cur_idx; i<candidates.size(); i++){
             if(i> cur_idx && candidates[i]==candidates[i-1]) continue; // mistake : candidates[i]==candidates[cur_idx]
             int cur = candidates[i];
