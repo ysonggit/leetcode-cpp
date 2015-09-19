@@ -1,6 +1,6 @@
 class Solution {
 public:
-    // trival O(n^2) space/time DP solution
+    //O(n^2) space/time DP solution
     int uniquePaths(int m, int n) {
         if(m==0||n==0) return 0;
         vector<vector<int> > D(m, vector<int>(n, 1));
