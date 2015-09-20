@@ -12,10 +12,10 @@ public:
             }
             int spaces = 1; //how many single spaces should have between every two words
             int extra = 0; // how many extra spaces should be appended to justify linewidth
-            int num_words = cur-last -1; // how many words in current line
+            int num_words = cur-last; // how many words in current line
             if(cur<n && cur != last + 1){ // not the last word
-                spaces = (maxWidth- cur_line_width)/num_words+1;
-                extra = (maxWidth- cur_line_width)%num_words;
+                spaces = (maxWidth- cur_line_width)/(num_words-1)+1;
+                extra = (maxWidth- cur_line_width)%(num_words-1);
             }
             res.push_back(words[last++]);
             while(extra--){
