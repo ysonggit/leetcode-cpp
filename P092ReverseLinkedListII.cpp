@@ -17,13 +17,6 @@ public:
             pre = pre->next;
         }
         ListNode * cur = pre->next;
-        // pre -> | cur -> x -> | y ..
-        //   1) pre ->  cur -> y | ..
-        //   2) x -> cur -> y 
-        // pre-> | x -> cur -> y | -> z
-        //   1) pre ->  cur -> z | ..
-        //   2) y -> x -> cur -> z|..
-        // pre -> y -> | x -> cur -> z | ..
         for(int i=0; i<n-m; i++){
             ListNode * nex_cp = cur->next;
             cur->next = nex_cp->next;
