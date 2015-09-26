@@ -14,8 +14,8 @@ public:
         if(node->right) return node->right;
         return closestRight(node->next);
     }
-    void topDownRecur(TreeLinkNode *node, TreeLinkNode *parent){
-        if(node==NULL) return;
+    TreeLinkNode* topDownRecur(TreeLinkNode *node, TreeLinkNode *parent){
+        if(node==NULL) return NULL;
         if(parent && node== parent->right) {
             node->next = closestRight(parent->next);
         }
@@ -23,11 +23,11 @@ public:
             if(parent->right) node->next = parent->right;
             else node->next = closestRight(parent->next);
         }
-        topDownRecur(node->right, node);
-        topDownRecur(node->left, node);
+        node->right = topDownRecur(node->right, node);
+        node->left = topDownRecur(node->left, node);
+        return node;
     }
     void connect(TreeLinkNode *root) {
-        if(root==NULL) return;
-        topDownRecur(root, NULL);
+        root = topDownRecur(root, NULL);
     }
 };
