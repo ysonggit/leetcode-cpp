@@ -1,4 +1,4 @@
-class Solution {
+class Solution1 {
 public:
     // BFS
     struct Pos{
@@ -36,6 +36,46 @@ public:
                 count++;
             }
         }
+        return count;
+    }
+};
+// DFS
+class Solution2 {
+public:
+    int dx[4] ={1,-1,0,0};
+    int dy[4] ={0,0,1,-1};
+    void dfs(vector<vector<char> > & grid, int i, int j, bool** visited){
+        int m = grid.size(), n = grid[0].size();
+        if(i>=m || i<0 || j>=n || j<0) return;
+        if(visited[i][j] || grid[i][j]=='0') return;
+        visited[i][j] = true;
+        grid[i][j]='0';
+        for(int k=0; k<4; k++){
+            dfs(grid, i+dx[k], j+dy[k], visited);
+        }
+        //visited[i][j] = false;
+        //grid[i][j] = '1';
+    }
+    int numIslands(vector<vector<char>>& grid) {
+        int m= grid.size();
+        int count = 0;
+        if(m==0) return count;
+        int n = grid[0].size();
+        bool ** visited = new bool*[m]; // to pass TLE
+        for(int i=0; i<m; i++){
+            visited[i] = new bool[n];
+            fill_n(visited[i], n, false);
+        }
+        for(int i=0; i<m; i++){
+            for(int j=0; j<n; j++){
+                if(grid[i][j]=='1'){ 
+                    dfs(grid, i, j, visited);
+                    count++;
+                }
+            }
+        }
+        for(int i=0; i<m; i++) delete[] visited[i];
+        delete [] visited;
         return count;
     }
 };
