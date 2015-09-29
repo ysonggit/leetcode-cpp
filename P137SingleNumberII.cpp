@@ -7,11 +7,11 @@ public:
         for(int cur : nums){
             for(int j=0; j<32; j++){
                 // get j-th bit of cur
-                bits[31-j] += (cur>>j) & 1;
+                bits[j] += (cur>>j) & 1;
             }
         }
         int x = 0;
-        for(int i=0; i<32; i++){
+        for(int i=31; i>=0; i--){
             x = x<<1;
             x += (bits[i] %3);
         }
