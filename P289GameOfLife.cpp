@@ -1,44 +1,44 @@
 class Solution {
 public:
-    int offset[3] = {1,-1,0};
-    int liveNeighbors(bool ** states, int i, int j, int m, int n){
-        int count = 0;
-        for(int x=-1; x<=1; x++){
-            for(int y=-1; y<=1; y++){
-                if(x==y && x==0) continue;
-                int nb_x = i+x, nb_y = j+y;
-                if(nb_x < 0 || nb_x ==m || nb_y<0 || nb_y==n) continue;
-                if(states[nb_x][nb_y]) count++;
-            }
-        }
-        return count;
-    }
+    /**
+     * use two bits to denote the transition
+     * the right is the current state, left is the next state
+     * 00 
+     * 01
+     * 10 
+     * 11 
+     */ 
     void gameOfLife(vector<vector<int>>& board) {
         int m = board.size();
         if(m==0) return;
         int n = board[0].size();
-        bool ** states = new bool*[m];
-        for(int i=0; i<m; i++){
-            states[i] = new bool[n];
-            for(int j=0; j<n; j++){
-                states[i][j] = board[i][j]>0 ? true : false;
-            }
-        }
+        int neighbors[8][2] = {{0,1},{0,-1},{1,0},{-1,0},{-1,-1},{-1,1},{1,-1},{1,1}};
         for(int i=0; i<m; i++){
             for(int j=0; j<n; j++){
-                int lives = liveNeighbors(states, i, j, m, n);
-                if(states[i][j]==1){
-                    if(lives<2 || lives >3) board[i][j] = 0;
+                int count =0; 
+                for(int k=0; k<8; k++){
+                    int x = i+neighbors[k][0], y = j+neighbors[k][1];
+                    if(x<0||y<0||x>=m||y>=n) continue;
+                    if(board[x][y] & 1==1) { // live
+                        count++;
+                    }
+                }
+                if(board[i][j] ==0){
+                    if(count==3) board[i][j] = 2; // 10 from die to live
+                    
                 }else{
-                    if(lives==3) {
-                        board[i][j]= 1;
+                    if(count<2 || count>3) {
+                        board[i][j]=1; // 01 from live to die 
+                    }else{
+                        board[i][j]=3;
                     }
                 }
             }   
         }
         for(int i=0; i<m; i++){
-            delete [] states[i];
+            for(int j=0; j<n; j++){
+                board[i][j] >>= 1;
+            }
         }
-        delete [] states;
      }
 };
