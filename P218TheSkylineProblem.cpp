@@ -1,6 +1,7 @@
 class Solution {
 public:
     // from zhiqing_xiao
+    // https://leetcode.com/discuss/61274/17-line-log-time-space-accepted-easy-solution-explanations
     vector<pair<int, int>> getSkyline(vector<vector<int>>& buildings) {
         vector<pair<int, int> > res;
         if(buildings.size()==0) return res;
