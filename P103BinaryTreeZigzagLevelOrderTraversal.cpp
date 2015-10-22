@@ -12,33 +12,23 @@ public:
     vector<vector<int>> zigzagLevelOrder(TreeNode* root) {
         vector<vector<int> > res;
         if(root==NULL) return res;
+        vector<int> level_vals;
         queue<TreeNode*> Q;
         Q.push(root);
-        int curr = 1, next = 0;
-        bool left_to_right = true;
-        vector<int> cur_vals;
+        bool rev_order = false;
         while(!Q.empty()){
-            auto node = Q.front();
-            Q.pop();
-            curr--;
-            cur_vals.push_back(node->val);
-            if(node->left){
-                next++;
-                Q.push(node->left);
+            int level_size = Q.size();
+            for(int i=0; i<level_size; i++){
+                TreeNode * cur = Q.front();
+                level_vals.push_back(cur->val);
+                Q.pop();
+                if(cur->left !=NULL) Q.push(cur->left);
+                if(cur->right!=NULL) Q.push(cur->right);
             }
-            if(node->right){
-                next++;
-                Q.push(node->right);
-            }
-            if(curr==0){
-                swap(curr, next);
-                if(!left_to_right){
-                    reverse(cur_vals.begin(), cur_vals.end());
-                }
-                res.push_back(cur_vals);
-                cur_vals.clear();
-                left_to_right = left_to_right ? false : true;
-            }
+            if(rev_order) reverse(level_vals.begin(), level_vals.end());
+            res.push_back(level_vals);
+            level_vals.clear();
+            rev_order = rev_order ? false : true;
         }
         return res;
     }
