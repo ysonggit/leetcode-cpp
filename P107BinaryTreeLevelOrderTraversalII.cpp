@@ -12,30 +12,22 @@ public:
     vector<vector<int>> levelOrderBottom(TreeNode* root) {
         vector<vector<int> > res;
         if(root==NULL) return res;
-        queue<TreeNode*> q;
-        q.push(root);
-        int cur_level = 1, nex_level=0;
-        vector<int> cur_level_vals;
-        while(!q.empty()){
-            auto cur = q.front();
-            q.pop();
-            cur_level--;
-            cur_level_vals.push_back(cur->val);
-            if(cur->left) {
-                q.push(cur->left);
-                nex_level++;
+        vector<int> level_vals;
+        queue<TreeNode*> Q;
+        Q.push(root);
+        while(!Q.empty()){
+            int level_size = Q.size();
+            for(int i=0; i<level_size; i++){
+                TreeNode * cur = Q.front();
+                level_vals.push_back(cur->val);
+                Q.pop();
+                if(cur->left !=NULL) Q.push(cur->left);
+                if(cur->right!=NULL) Q.push(cur->right);
             }
-            if(cur->right){
-                q.push(cur->right);
-                nex_level++;
-            }
-            if(cur_level==0){
-                swap(cur_level, nex_level);
-                res.push_back(cur_level_vals);
-                cur_level_vals.clear();
-            }
+            res.push_back(level_vals);
+            level_vals.clear();
         }
         reverse(res.begin(), res.end());
-        return res;
+        return res; 
     }
 };
