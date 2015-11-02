@@ -1,5 +1,7 @@
 class Solution {
 public:
+    // can optimize solution with memorization 
+    // or DP (Sprague-Grundy Theorem) https://leetcode.com/discuss/64344/theory-matters-from-backtracking-128ms-to-dp-0ms
     bool canWin(string s) {
         int n = s.length();
         if(n<2) return false;
