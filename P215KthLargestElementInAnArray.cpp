@@ -30,3 +30,27 @@ public:
         return maxheap.top();
     }
 };
+
+class Solution3 {
+public:
+    // selection rank O(n)
+    int findKthLargest(vector<int>& nums, int k) {
+        int n = nums.size();
+        if(n==0 || k<1) return 0;
+        return getKth(nums, n-k+1, 0, n-1);
+    }
+    int getKth(vector<int>& nums, int k, int start, int end){
+        int pivot = nums[end];
+        int left = start, right = end;
+        while(true){
+            while(nums[left]<pivot && left < right) left++;
+            while(nums[right]>=pivot && right > left) right--;
+            if(left==right) break;
+            swap(nums[left], nums[right]);
+        }
+        swap(nums[left], nums[end]);
+        if(k==left+1) return pivot;
+        else if(k<left+1) return getKth(nums, k, start, left-1);
+        return getKth(nums, k, left+1, end);
+    }
+};
