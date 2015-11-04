@@ -3,16 +3,15 @@ public:
     // DFS TLE
     // BFS idea from jeantimex
     bool isValid(string s){
-        if(s.empty()) return true;
-        stack<char> left_parens;
+        int left_parens = 0;
         for(char c : s){
-            if(c=='(') left_parens.push(c);
+            if(c=='(') left_parens++;
             else if(c==')'){
-                if(left_parens.empty()) return false;
-                else left_parens.pop();
+                if(left_parens==0) return false;
+                else left_parens--;
             }else continue;
         }
-        return left_parens.empty() ? true : false;
+        return left_parens==0 ? true : false;
     }
     vector<string> removeInvalidParentheses(string s) {
         vector<string> res;
