@@ -26,13 +26,15 @@ public:
                 if(cur.length() >= max_len) res.push_back(cur);
                 max_len = max(max_len, (int)cur.length());
             }
-            for(int i=0; i<cur.length(); i++){
-                if(cur[i]!=')'&& cur[i]!='(') continue;
-                // remove one '(' or ')'
-                string next = cur.substr(0, i)+cur.substr(i+1);
-                if(visited.find(next)==visited.end()){
-                    visited.insert(next);
-                    Q.push(next);
+            if(max_len < cur.length()) {
+                for(int i=0; i<cur.length(); i++){
+                    if(cur[i]!=')'&& cur[i]!='(') continue;
+                    // remove one '(' or ')'
+                    string next = cur.substr(0, i)+cur.substr(i+1);
+                    if(visited.find(next)==visited.end()){
+                        visited.insert(next);
+                        Q.push(next);
+                    }
                 }
             }
         }
