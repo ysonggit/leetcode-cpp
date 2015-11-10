@@ -1,4 +1,4 @@
-class NumArray {
+class NumArray1 {
 public:
     struct SegmentTreeNode{
         int start, end, sum;
@@ -40,6 +40,26 @@ public:
 
     int sumRange(int i, int j) {
         return query(root, i, j);
+    }
+};
+
+
+class NumArray2 {
+public:
+    // nums =    [-2, 0, 3, -5, 2, -1]
+    //prefix =[0  -2, -2 1  -4 -2  -3]
+    vector<int> prefix_sum;
+    NumArray(vector<int> &nums) {
+        int n = nums.size();
+        prefix_sum.resize(n+1);
+        prefix_sum[0] = 0;
+        for(int i=0; i<n; i++){
+            prefix_sum[i+1] = prefix_sum[i] + nums[i];
+        }
+    }
+
+    int sumRange(int i, int j) {
+        return prefix_sum[j+1] - prefix_sum[i]; 
     }
 };
 
