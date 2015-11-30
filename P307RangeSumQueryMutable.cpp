@@ -69,3 +69,44 @@ public:
 // numArray.sumRange(0, 1);
 // numArray.update(1, 10);
 // numArray.sumRange(1, 2);
+
+class NumArray {
+public:
+    int n;
+    vector<int> data, tree;
+    NumArray(vector<int> &nums) {
+        n = nums.size();
+        data.resize(n, 0);
+        tree.resize(n+1, 0);
+        for(int i=0; i<n; i++){
+            update(i, nums[i]);
+        }
+    }
+
+    void update(int i, int val) {
+        int diff = val - data[i];
+        data[i] = val;
+        for(int j=i+1; j<=n; j+=(j&(-j))){
+            tree[j] += diff;
+        }
+    }
+
+    int sumRange(int i, int j) {
+        return sum(j+1)-sum(i);
+    }
+    
+    int sum(int i){
+        int s = 0;
+        for(int j=i; j>0; j-=(j&(-j))){
+            s+= tree[j];
+        }
+        return s;
+    }
+};
+
+
+// Your NumArray object will be instantiated and called as such:
+// NumArray numArray(nums);
+// numArray.sumRange(0, 1);
+// numArray.update(1, 10);
+// numArray.sumRange(1, 2);
